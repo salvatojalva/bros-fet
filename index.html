@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<!--
+Tinker CSS Template
+https://templatemo.com/tm-506-tinker
+-->
+        <title>Dispositiovos JFET</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+       
+        
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/fontAwesome.css">
+        <link rel="stylesheet" href="css/hero-slider.css">
+        <link rel="stylesheet" href="css/owl-carousel.css">
+        <link rel="stylesheet" href="css/templatemo-style.css">
+        <link rel="stylesheet" href="css/lightbox.css">
+
+        <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.9/angular.js"></script>
+        
+    </head>
+
+<body ng-app="Jfet">
+    <div class="header">
+        <div class="container">
+            <nav class="navbar navbar-inverse" role="navigation">
+                <div class="navbar-header">
+                    <button type="button" id="nav-toggle" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="#" class="navbar-brand scroll-top"><em>Bros</em>FET</a>
+                </div>
+                <!--/.navbar-header-->
+                <div id="main-nav" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#" class="scroll-top">Directa</a></li>
+                        <li><a href="#" class="scroll-link" data-id="about">Autopolarizacion</a></li>
+                        <li><a href="#" class="scroll-link" data-id="portfolio">Dvision de voltajes</a></li>
+                        <li><a href="https://www.youtube.com/watch?v=ycsD-3xo2tk" target="_blank"><i class="fa fa-youtube-play" aria-hidden="true"></i> Tutorial</a></li>
+                    </ul>
+                </div>
+                <!--/.navbar-collapse-->
+            </nav>
+            <!--/.navbar-->
+        </div>
+        <!--/.container-->
+    </div>
+    <!--/.header-->
+
+
+    <div ng-controller="DirectaController" class="parallax-content baner-content" id="home">
+        
+        <div class="container">
+            
+            <form class="input-form directa">
+                <div class="form-group">
+                    <label>VDD</label>
+                    <input type="number" class="form-control" ng-model="circuito.V.vdd">
+                </div>
+
+                <div class="form-group">
+                    <label>V<small>P</small></label>
+                    <input type="number" class="form-control" ng-model="circuito.V.vp">
+                </div>
+                <div class="form-group">
+                    <label>I<small>DSS</small></label>
+                    <input type="number" class="form-control" ng-model="circuito.I.idss">
+                </div>
+                <div class="form-group">
+                    <label>V<small>GS</small></label>
+                    <input type="number" class="form-control" ng-model="circuito.V.vgs">
+                </div>
+
+                <div class="form-group">
+                    <label>R<small>D</small></label>
+                    <input type="number" class="form-control" ng-model="circuito.R.rd">
+                </div>
+                
+                <button ng-click="calcular()" class="btn btn-primary">Submit</button>
+
+                <table class="table">
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>V</th>
+                        <th>I</th>
+                        <th>P</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <th>R<small>D</small></th>
+                        <td>{{ circuito.R.rd / 1000  | number:2 }}KΩ</td>
+                        <td>{{ circuito.V.vrd  | number:2 }}V</td>
+                        <td>{{ circuito.I.id  * 1000  | number:2 }}mA</td>
+                        <td>{{ circuito.P.prd * 1000  | number:2 }}mW</td>
+                        <th colspan="2">{{ (circuito.P.prd + circuito.P.pjfet)  * 1000 | number:2 }}mW</th>
+                    </tr>
+                    <tr>
+                        <th>JFET</th>
+                        <td></td>
+                        <td>{{ circuito.V.vjfet  | number:2 }}V</td>
+                        <td>{{ circuito.I.id * 1000 | number:2 }}mA</td>
+                        <td>{{ circuito.P.pjfet * 1000 | number:2 }}mW</td>
+                    </tr>
+                    <tr>
+                        <th>V<small>DD</small></th>
+                        <td></td>
+                        <td>{{ circuito.V.vdd  | number:2 }}V</td>
+                        <td>{{ circuito.I.id * 1000 | number:2 }}mA</td>
+                        <td>{{ circuito.P.vdd * 1000 | number:2 }}mW</td>
+                        <th>{{ circuito.P.vdd * 1000  | number:2 }}mW</th>
+                    </tr>
+                    
+                </table>
+
+            </form>
+        </div>
+    </div>
+
+
+    <section id="about" class="page-section" ng-controller="AutopolarizacionController">
+        <div class="container" >
+            <form class="input-form auto">
+                <div class="form-group">
+                    <label>VDD</label>
+                    <input type="number" class="form-control" ng-model="circuito.V.vdd">
+                </div>
+
+                <div class="form-group">
+                    <label>V<small>P</small></label>
+                    <input type="number" class="form-control" ng-model="circuito.V.vp">
+                </div>
+                <div class="form-group">
+                    <label>I<small>DSS</small></label>
+                    <input type="number" class="form-control" ng-model="circuito.I.idss">
+                </div>
+
+                <div class="form-group">
+                    <label>R<small>D</small></label>
+                    <input type="number" class="form-control" ng-model="circuito.R.rd">
+                </div>
+
+                <div class="form-group">
+                    <label>R<small>s</small></label>
+                    <input type="number" class="form-control" ng-model="circuito.R.rs">
+                </div>
+                
+                <button ng-click="calcular()" class="btn btn-primary">Submit</button>
+
+                <table class="table">
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>V</th>
+                        <th>I</th>
+                        <th>P</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <th>R<small>D</small></th>
+                        <td>{{ circuito.R.rd / 1000  | number:2 }}KΩ</td>
+                        <td>{{ circuito.V.vrd  | number:2 }}V</td>
+                        <td>{{ circuito.I.id  * 1000  | number:2 }}mA</td>
+                        <td>{{ circuito.P.prd * 1000  | number:2 }}mW</td>
+                        <th colspan="3">{{ ( circuito.P.prs + circuito.P.prd + circuito.P.pjfet)  * 1000 | number:2 }}mW</th>
+                    </tr>
+
+                    <tr>
+                        <th>R<small>s</small></th>
+                        <td>{{ circuito.R.rs / 1000  | number:2 }}KΩ</td>
+                        <td>{{ circuito.V.vrs  | number:2 }}V</td>
+                        <td>{{ circuito.I.id  * 1000  | number:2 }}mA</td>
+                        <td>{{ circuito.P.prs * 1000  | number:2 }}mW</td>
+                    </tr>
+                    <tr>
+                        <th>JFET</th>
+                        <td></td>
+                        <td>{{ circuito.V.vjfet  | number:2 }}V</td>
+                        <td>{{ circuito.I.id * 1000 | number:2 }}mA</td>
+                        <td>{{ circuito.P.pjfet * 1000 | number:2 }}mW</td>
+                    </tr>
+                    <tr>
+                        <th>V<small>DD</small></th>
+                        <td></td>
+                        <td>{{ circuito.V.vdd  | number:2 }}V</td>
+                        <td>{{ circuito.I.id * 1000 | number:2 }}mA</td>
+                        <td>{{ circuito.P.vdd * 1000 | number:2 }}mW</td>
+                        <th>{{ circuito.P.vdd * 1000  | number:2 }}mW</th>
+                    </tr>
+                    
+                </table>
+
+            </form>
+        </div>
+    </section>
+
+    <section id="portfolio" ng-controller="DivisionController">
+        <div class="content-wrapper pt-5" style="padding-top: 15vh; padding-bottom: 15vh;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form class="input-form division">
+                            <div class="form-group">
+                                <label>VDD</label>
+                                <input type="number" class="form-control" ng-model="circuito.V.vdd">
+                            </div>
+            
+                            <div class="form-group">
+                                <label>V<small>P</small></label>
+                                <input type="number" class="form-control" ng-model="circuito.V.vp">
+                            </div>
+                            <div class="form-group">
+                                <label>I<small>DSS</small></label>
+                                <input type="number" class="form-control" ng-model="circuito.I.idss">
+                            </div>
+            
+                            <div class="form-group">
+                                <label>R<small>D</small></label>
+                                <input type="number" class="form-control" ng-model="circuito.R.rd">
+                            </div>
+            
+                            <div class="form-group">
+                                <label>R<small>s</small></label>
+                                <input type="number" class="form-control" ng-model="circuito.R.rs">
+                            </div>
+
+                            <div class="form-group">
+                                <label>R<small>1</small></label>
+                                <input type="number" class="form-control" ng-model="circuito.R.r1">
+                            </div>
+            
+                            <div class="form-group">
+                                <label>R<small>2</small></label>
+                                <input type="number" class="form-control" ng-model="circuito.R.r2">
+                            </div>
+                            
+                            <button ng-click="calcular()" class="btn btn-primary">Submit</button>
+            
+                            <table class="table">
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>V</th>
+                                    <th>I</th>
+                                    <th>P</th>
+                                    <th></th>
+                                </tr>
+
+                                <tr>
+                                    <th>R<small>1</small></th>
+                                    <td>{{ circuito.R.r1 / 1000  | number:2 }}KΩ</td>
+                                    <td>{{ circuito.V.r1  | number:2 }}V</td>
+                                    <td>{{ circuito.I.idR  * 1000  | number:2 }}mA</td>
+                                    <td>{{ circuito.P.r1 * 1000  | number:2 }}mW</td>
+                                    <th colspan="4">{{ ( circuito.P.prs + circuito.P.prd + circuito.P.pjfet)  * 1000 | number:2 }}mW</th>
+                                </tr>
+                                <tr>
+                                    <th>R<small>1</small></th>
+                                    <td>{{ circuito.R.r2 / 1000  | number:2 }}KΩ</td>
+                                    <td>{{ circuito.V.r2  | number:2 }}V</td>
+                                    <td>{{ circuito.I.idR  * 1000  | number:2 }}mA</td>
+                                    <td>{{ circuito.P.r2 * 1000  | number:2 }}mW</td>
+                                </tr>
+
+                                <tr>
+                                    <th>R<small>D</small></th>
+                                    <td>{{ circuito.R.rd / 1000  | number:2 }}KΩ</td>
+                                    <td>{{ circuito.V.vrd  | number:2 }}V</td>
+                                    <td>{{ circuito.I.id  * 1000  | number:2 }}mA</td>
+                                    <td>{{ circuito.P.prd * 1000  | number:2 }}mW</td>
+                                </tr>
+            
+                                <tr>
+                                    <th>R<small>s</small></th>
+                                    <td>{{ circuito.R.rs / 1000  | number:2 }}KΩ</td>
+                                    <td>{{ circuito.V.vrs  | number:2 }}V</td>
+                                    <td>{{ circuito.I.id  * 1000  | number:2 }}mA</td>
+                                    <td>{{ circuito.P.prs * 1000  | number:2 }}mW</td>
+                                </tr>
+                                <tr>
+                                    <th>JFET</th>
+                                    <td></td>
+                                    <td>{{ circuito.V.vjfet  | number:2 }}V</td>
+                                    <td>{{ circuito.I.id * 1000 | number:2 }}mA</td>
+                                    <td>{{ circuito.P.pjfet * 1000 | number:2 }}mW</td>
+                                </tr>
+                                <tr>
+                                    <th>V<small>DD</small></th>
+                                    <td></td>
+                                    <td>{{ circuito.V.vdd  | number:2 }}V</td>
+                                    <td>{{ circuito.I.id * 1000 | number:2 }}mA</td>
+                                    <td>{{ circuito.P.vdd * 1000 | number:2 }}mW</td>
+                                    <th>{{ circuito.P.vdd * 1000  | number:2 }}mW</th>
+                                </tr>
+                                
+                            </table>
+            
+                        </form>
+                    </div>
+                   
+                </div>
+            </div>
+        </div> 
+    </section>
+
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-sm-12">
+                    <div class="logo">
+                        <a class="logo-ft scroll-top" href="#"><em>BROS</em>FET</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+
+    <script src="js/vendor/bootstrap.min.js"></script>
+
+    <script src="js/plugins.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/electronica.js"></script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        // navigation click actions 
+        $('.scroll-link').on('click', function(event){
+            event.preventDefault();
+            var sectionID = $(this).attr("data-id");
+            scrollToID('#' + sectionID, 750);
+        });
+        // scroll to top action
+        $('.scroll-top').on('click', function(event) {
+            event.preventDefault();
+            $('html, body').animate({scrollTop:0}, 'slow');         
+        });
+        // mobile nav toggle
+        $('#nav-toggle').on('click', function (event) {
+            event.preventDefault();
+            $('#main-nav').toggleClass("open");
+        });
+    });
+    // scroll function
+    function scrollToID(id, speed){
+        var offSet = 50;
+        var targetOffset = $(id).offset().top - offSet;
+        var mainNav = $('#main-nav');
+        $('html,body').animate({scrollTop:targetOffset}, speed);
+        if (mainNav.hasClass("open")) {
+            mainNav.css("height", "1px").removeClass("in").addClass("collapse");
+            mainNav.removeClass("open");
+        }
+    }
+    if (typeof console === "undefined") {
+        console = {
+            log: function() { }
+        };
+    }
+    </script>
+</body>
+</html>
